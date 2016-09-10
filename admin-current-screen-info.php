@@ -10,8 +10,8 @@
  * @wordpress-plugin
  * Plugin Name: Admin current screen Info
  * Plugin URI:  http://github.com/codiceovvio/admin-current-screen-info
- * Description: Little helper plugin to display some informations about the current screen in view. It shows them in a colour-nag box at the top of each admin screen.
- * Version:     0.1.0
+ * Description: A little helper plugin to display some informations about the current screen in view. It shows them in a dismissable notice box at the top of each admin screen.
+ * Version:     0.2.0
  * Author:      Codice Ovvio
  * Author URI:  http://github.com/codiceovvio
  * Text Domain: none
@@ -48,22 +48,25 @@ Online: http://www.gnu.org/licenses/gpl.txt
  */
 function display_current_admin_screen_info() {
 
-		$screen = get_current_screen();
-		$class = "update-nag";
+	$screen = get_current_screen();
+	$error_class = 'notice notice-error';
+	$warning_class = 'notice notice-warning';
+	$success_class = 'notice notice-success';
+	$info_class = 'notice notice-info';
+	$dismiss = ' is-dismissible';
+	$inline = ' inline';
 
-		if ( $screen->post_type != NULL ) {
-			$message_postype = 'We are inside <strong>' . $screen->post_type . '</strong> post type screen';
-		} else {
-			$message_postype = 'This screen <strong>has not </strong> a specific post type assigned to';
-		}
-		$message_screenid = 'This specific screen has an id labeled <strong>' . $screen->id . '</strong>';
+	if ( null != $screen->post_type ) {
+		$message_postype = 'We are inside <strong>' . $screen->post_type . '</strong> post type screen';
+	} else {
+		$message_postype = 'This screen <strong>has not </strong> a specific post type assigned to';
+	}
+	$message_screenid = 'This specific screen has an id labeled <strong>' . $screen->id . '</strong>';
 
-		echo "<div class=\"$class\">
-			<p>$message_postype</p>
-			<p>$message_screenid</p>
-			</div>";
+	echo '<div class="' . $info_class . $dismiss . '">
+		<p>' . $message_postype . '</p>
+		<p>' . $message_screenid . '</p>
+		</div>';
 
 }
 add_action( 'admin_notices', 'display_current_admin_screen_info' );
-
-?>
